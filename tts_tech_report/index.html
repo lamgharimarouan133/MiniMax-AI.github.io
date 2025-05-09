@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MiniMax TTS Tech Report</title>
+
+  <meta name="description"
+    content="Autoregressive Transformer TTS model generating high-quality, expressive speech with reference timbre." />
+  <meta name="keywords" content="latex.css,css library,class-less css,latex css" />
+  <meta property="og:title" content="MiniMax TTS Tech Report" />
+  <meta property="og:url" content="https://minimax-ai.github.io/tts_tech_report" />
+  <meta property="og:description"
+    content="Autoregressive Transformer TTS model generating high-quality, expressive speech with reference timbre." />
+  <meta property="og:type" content="website" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body id="top" class="text-justify">
+  <header>
+    <h1>MiniMax TTS Tech Report</h1>
+    <p class="author">
+      MiniMax Team <span class="date">May 2025</span><br />
+      <a href="/tech_report.pdf">[Report]</a>
+    </p>
+  </header>
+
+  <div class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      We introduce Minimax-Speech, an autoregressive Transformer-based text-to-speech (TTS) model thatgenerates semantic
+      features, and convert them into high-quality audio using a flow matching mechanism.By leveraging an audio encoder
+      to
+      extract timbre features from a reference audio, Minimax-Speechcan produce highly expressive speech with timbre
+      consistent with the reference in a zero-shot manner.Furthermore, it supports one-shot voice cloning, achieving
+      exceptionally high similarity to the targetvoice. Perceptual audio quality of the synthesized audio is also
+      notably
+      high, enhanced through theuse of Flow-VAE. Our model supports dozens of languages and demonstrates excellent
+      performanceacross multiple objective metrics and subjective evaluations. Another key strength of Minimax-Speechis
+      its
+      extensibility without modifying the base model, enabling various applications such as: arbitraryvoice emotion
+      control
+      via LoRA; text-driven timbre generation by synthesizing timbre features directlyfrom text; and Professional Voice
+      Cloning (PVC) by fine-tuning timbre features with additional data. Westrongly encourage readers to visit
+      <a href="https://github.com/MiniMax-AI">https://github.com/MiniMax-AI</a> for more examples.
+    </p>
+  </div>
+
+  <nav role="navigation" class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li>
+        <a href="#expressiveness-demonstration">Expressiveness Demonstration</a>
+        <ol>
+          <li><a href="#goodcase-with-high-versatility">Goodcase with High Versatility</a></li>
+          <li><a href="#showcase-with-multiple-generation-attempts">Showcase with Multiple Generation Attempts,
+              Post-Processing Audio Effects and Added Sound Effects</a></li>
+          <li><a href="#examples-with-more-possibilities">Examples with More Possibilities</a></li>
+        </ol>
+      </li>
+      <li><a href="#zero-shot-vs-one-shot-demonstrations">Zero-Shot vs. One-Shot Demonstrations</a></li>
+      <li><a href="#multilingual-and-cross-lingual-capabilities-demonstration">Multilingual and Cross-Lingual
+          Capabilities Demonstration</a></li>
+      <li><a href="#flow-vae-vs-vae-comparison">Flow-VAE vs. VAE Comparison</a></li>
+      <li><a href="#professional-voice-clone-pvc-demonstration">Professional Voice Clone (PVC) Demonstration</a></li>
+      <li><a href="#emotion-control-demonstration">Emotion Control Demonstration</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <article>
+      <h2 id="system-overview">System Overview</h2>
+      <figure>
+        <img src="assets/images/system-overview.png" loading="lazy" alt="System Architecture" width="100%"
+          height="auto" />
+        <figcaption>
+          System Overview
+        </figcaption>
+      </figure>
+
+      <h2 id="expressiveness-demonstration">Expressiveness Demonstration</h2>
+      <h3 id="goodcase-with-high-versatility">Goodcase with High Versatility</h3>
+      <ul>
+        <li>
+          A Compelling and Persuasive Speaker Voice
+          <audio src="assets/audios/Compelling%20and%20Persuasive.wav" controls></audio>
+        </li>
+        <li>
+          A Clear and Explanatory Voice with Broad Emotional Dynamics Across Different Texts
+          <audio src="assets/audios/Explanatory%20Broad%20Emotional.wav" controls></audio>
+        </li>
+        <li>
+          Another Explanatory Voice with Supernatural Prosody, Featuring Distinct Ethnic and Age Characteristics
+          <audio src="assets/audios/Explanatory%20Supernatural%20Prosody.MP3" controls></audio>
+        </li>
+        <li>
+          A Warm and Magnetic Voice that Brings Comfort
+          <audio src="assets/audios/Warm%20and%20Magnetic.mp3" controls></audio>
+        </li>
+      </ul>
+
+      <h3 id="showcase-with-multiple-generation-attempts">Showcase with Multiple Generation Attempts, Post-Processing
+        Audio Effects and Added Sound Effects</h3>
+      <ul>
+        <li>
+          A Husky Male Voice: From Soft Murmur to Excitement to Anger, then to Whispers
+          <audio src="assets/audios/Murmur-Excitement-Anger-%20Whispers.MP3" controls></audio>
+        </li>
+        <li>
+          An Angry Female Voice: From Soft Murmur to Rage to Reminiscence, then to Weeping
+          <audio src="assets/audios/Neutral-Rage-Reminiscence-Weeping.MP3" controls></audio>
+        </li>
+      </ul>
+
+      <h3 id="examples-with-more-possibilities">Examples with More Possibilities</h3>
+      <ul>
+        <li>
+          An ASMR Whispering Voice with Generated Breathing and Sound Effects
+          <audio src="assets/audios/Breathy%20ASMR.MP3" controls></audio>
+        </li>
+        <li>
+          A Robotic Voice with Rich Bass Resonance and Spatial Presence
+          <audio src="assets/audios/Lucky%20Robot.mp3" controls></audio>
+        </li>
+        <li>
+          A Sardonic Mature Female Voice
+          <audio src="assets/audios/Onee-san.wav" controls></audio>
+        </li>
+      </ul>
+
+      <h2 id="zero-shot-vs-one-shot-demonstrations">Zero-Shot vs. One-Shot Demonstrations</h2>
+      <div class="scroll-wrapper">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col">Voice Cloning Source Audio</th>
+              <th scope="col">Prompt</th>
+              <th scope="col">Text Content</th>
+              <th scope="col">Zero-Shot Version</th>
+              <th scope="col">One-Shot Version</th>
+            </tr>
+            <tr class="border-bottom-thin">
+              <th>
+                <audio class="audio-sm" src="assets/audios/Lyrical%20Cantonese_Source.WAV" controls></audio>
+              </th>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Lyrical%20Cantonese_Prompt.WAV" controls></audio>
+              </td>
+              <td>
+                命运就算颠沛流离，<br>
+                命运就算曲折离奇，<br>
+                命运就算恐吓着你，<br>
+                做人没趣味。<br>
+                别流泪，心酸，更不应舍弃。<br>
+                我愿能，一生永远陪伴你。
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Lyrical%20Cantonese_ZeroShot.mp3" controls></audio>
+                Preserving Distinctive Voice<br>
+                Timbre and Expressive <br>
+                Prosody with Regularized <br>
+                Pausing and Speech Rate
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Lyrical%20Cantonese_Oneshot.mp3" controls></audio>
+                Better Reproduction of<br>
+                Prompt's Exaggerated Speech<br>
+                Rate and Characteristic<br>
+                Phrase-Initial Pauses
+              </td>
+            </tr>
+            <tr>
+              <th>
+                <audio class="audio-sm" src="assets/audios/Breaking%20Down%20Mandarin_Source.WAV" controls></audio>
+              </th>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Breaking%20Down%20Mandarin_Prompt.WAV" controls></audio>
+              </td>
+              <td>
+                你们这些躲在道德高地的懦夫，<br>
+                敢承认自己对本我的恐惧吗？<br>
+                回答我！嗯？你回答我！<br>
+                Look in my eyes！<br>
+                老子写梦的解析时<br>
+                你们还在玩泥巴，<br>
+                我精神分析引论每个字母都能<br>
+                刺穿文明社会的虚伪面具，<br>
+                我解剖潜意识就像<br>
+                外科医生划开皮肤。<br>
+                是不是啊？说话！
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Breaking%20Down%20Mandarin_ZeroShot.mp3" controls></audio>
+                Capable of Generating<br>
+                Relatively Calmer Emotions<br>
+                while Preserving Voice<br>
+                Identity
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Breaking%20Down%20Mandarin_OneShot.mp3" controls></audio>
+                Consistently Reproducing the<br>
+                Angry Emotion from Prompt<br>
+                in Every Utterance
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="multilingual-and-cross-lingual-capabilities-demonstration">Multilingual and Cross-Lingual Capabilities
+        Demonstration</h2>
+      <div class="scroll-wrapper">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col">Languages</th>
+              <th scope="col">Text Content</th>
+              <th scope="col">Minimax<br>Speech_02_HD</th>
+              <th scope="col">ElevenLabs<br>Multilingual_v2</th>
+              <th scope="col">OpenAI<br>TTS_1</th>
+            </tr>
+            <!-- Thai -->
+            <tr class="border-bottom-thin">
+              <th>Thai</th>
+              <td>
+                <p>
+                  สวัสดีค่ะ วันนี้อากาศดีมากเลย<br>
+                  คุณจะไปทานอาหารกลางวันที่ไหนคะ<br>
+                  ฉันกำลังคิดว่าจะไปร้านอาหารไทยแถวนี้<br>
+                </p>
+                <p>
+                  你好，今天天气真好，你准备去哪里吃午饭？<br>
+                  我在想去附近的泰国餐厅。
+                </p>
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Thai.mp3" controls></audio>
+              </td>
+              <td>
+                Not supported
+              </td>
+              <td>
+                Not supported
+              </td>
+            </tr>
+            <!-- Vietnamese -->
+            <tr class="border-bottom-thin">
+              <th>Vietnamese</th>
+              <td>
+                <p>
+                  Tôi đang đọc một cuốn sách rất hay về lịch sử Việt Nam.<br>
+                  Những câu chuyện về văn hóa truyền<br>
+                  thống thật sự rất thú vị.<br>
+                </p>
+                <p>
+                  我正在读一本很好的越南历史书。<br>
+                  关于传统文化的故事真的很有趣。
+                </p>
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Vietnamese.mp3" controls></audio>
+              </td>
+              <td>
+                Not supported
+              </td>
+              <td>
+                Not supported
+              </td>
+            </tr>
+            <!-- Czech -->
+            <tr class="border-bottom-thin">
+              <th>Czech</th>
+              <td>
+                <p>
+                  Ranní mlha se pomalu zvedá nad řekou,<br>
+                  zatímco první paprsky slunce prosvítají mezi stromy.<br>
+                  Ptáci začínají svůj ranní koncert.<br>
+                </p>
+                <p>
+                  晨雾缓缓升起在河面上，第一缕阳光穿过树林。<br>
+                  鸟儿们开始了它们的晨间音乐会。
+                </p>
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Czech.mp3" controls></audio>
+              </td>
+              <td>
+                Not supported
+              </td>
+              <td>
+                Not supported
+              </td>
+            </tr>
+            <!-- Polish -->
+            <tr class="border-bottom-thin">
+              <th>Polish</th>
+              <td>
+                <p>
+                  Młoda sowa siedzi cicho na gałęzi sosny,<br>
+                  obserwując leśną polanę w świetle księżyca.<br>
+                  Wiatr delikatnie porusza liśćmi drzew.<br>
+                </p>
+                <p>
+                  年轻的猫头鹰静静地坐在松树枝上，<br>
+                  在月光下观察着林间空地。<br>
+                  微风轻轻摇动着树叶。
+                </p>
+              </td>
+              <td>
+                <audio class="audio-sm" src="assets/audios/Polish.mp3" controls></audio>
+              </td>
+              <td>
+                Not supported
+              </td>
+              <td>
+                Not supported
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="scroll-wrapper" style="margin-top: 4em;">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col">Original Language</th>
+              <th scope="col">Target Language</th>
+              <th scope="col">Text Content</th>
+              <th scope="col">Audio</th>
+            </tr>
+            <tr class="border-bottom-thin">
+              <th>English</th>
+              <td>Mandarin</td>
+              <td>
+                Kiddo! Come come come, 学如逆水行舟，不进则退。<br>
+                I see you're using AI tools already - so smart!<br>
+                But eh, cannot just rely on tools only lah!<br>
+                The future belongs to those who can work alongside AI,<br>
+                not those scared of it.
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/English-Mandarin.wav" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <th>Mandarin</th>
+              <td>Cantonese</td>
+              <td>
+                老铁啊，多谢晒你送我呢本，广州话正音字典，咁好嘢喎！<br>
+                我呢个大老爷们儿学广州话真系好难㗎！成日都分唔清声调啊。<br>
+                嗱，而家有咗呢本书，什么都好啦。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Spanish-English.wav" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <th>Mandarin</th>
+              <td>English</td>
+              <td>
+                The people said, 桂林's scenery is the first under heaven.<br>
+                Yet in my opinion, 阳朔 scenery is better than 桂林。<br>
+                群峰倒影山浮水，无水无山不入神。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Mandarin-Cantonese.wav" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <th>Spanish</th>
+              <td>English</td>
+              <td>
+                Mi abuelita always told me "el que persevera, alcanza".<br>
+                If you persevere, you'll achieve your dreams!<br>
+                Guess what! They choose me to play the lead role in our BIG show!
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Mandarin-English.WAV" controls></audio>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="zero-shot-vs-one-shot-demonstrations">Flow-VAE vs. VAE Comparison</h2>
+      <div class="scroll-wrapper">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col" style="text-align: center;">Source Audio</th>
+              <th scope="col" style="text-align: center;">Flow-VAE</th>
+              <th scope="col" style="text-align: center;">VAE</th>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td style="width: 30%">
+                <audio src="assets/audios/Condition1.wav" controls></audio>
+              </td>
+              <td style="width: 30%">
+                <audio src="assets/audios/FlowVAE1.wav" controls></audio>
+              </td>
+              <td style="width: 30%">
+                <audio src="assets/audios/VAE1.wav" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio src="assets/audios/Condition2.wav" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/FlowVAE2.wav" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/VAE2.wav" controls></audio>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <audio src="assets/audios/Conditon3.wav" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/FlowVAE3.wav" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/VAE3.wav" controls></audio>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="professional-voice-clone-pvc-demonstration">Professional Voice Clone (PVC) Demonstration</h2>
+      <div class="scroll-wrapper">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col" style="text-align: center;">Source Audio</th>
+              <th scope="col" style="text-align: center;">Fast</th>
+              <th scope="col" style="text-align: center;">PVC</th>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td style="width: 30%">
+                <audio src="assets/audios/JosephBrodsky_Source.wav" controls></audio>
+              </td>
+              <td style="width: 30%">
+                <audio src="assets/audios/JosephBrodsky_Fast.mp3" controls></audio>
+              </td>
+              <td style="width: 30%">
+                <audio src="assets/audios/JosephBrodsky_PVC.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio src="assets/audios/TianJin_Source.wav" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/TianJin_Fast.mp3" controls></audio>
+              </td>
+              <td>
+                <audio src="assets/audios/TianJin_PVC.mp3" controls></audio>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="emotion-control-demonstration">Emotion Control Demonstration</h2>
+      <div class="scroll-wrapper">
+        <table style="width: 100%;">
+          <tbody>
+            <tr class="border-bottom-thin">
+              <th scope="col">Neutral</th>
+              <th scope="col" style="min-width: 120px;">Emotion</th>
+              <th scope="col">Text Content</th>
+              <th scope="col">Emotion-Infused Audio</th>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral1.mp3" controls></audio>
+              </td>
+              <td>
+                Surprised
+              </td>
+              <td>
+                天哪！我完全没想到会在这里遇见你，<br>
+                都过去这么多年了，你一点都没变！
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Surprised.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral2.mp3" controls></audio>
+              </td>
+              <td>
+                Disgusted
+              </td>
+              <td>
+                这个地方实在太脏乱了，到处都是垃圾和难闻的气味儿，<br>
+                我一秒钟都不想多待。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Disgusted.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral3.mp3" controls></audio>
+              </td>
+              <td>
+                Fearful
+              </td>
+              <td>
+                深夜回家的路上，我清楚地听见身后有脚步声在跟着我，<br>
+                可是回头却什么都看不见。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Fearful.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral4.mp3" controls></audio>
+              </td>
+              <td>
+                Angry
+              </td>
+              <td>
+                我付出了这么多，换来的却是这样的背叛！<br>
+                你怎么可以这样对待我的信任！
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Angry.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral5.mp3" controls></audio>
+              </td>
+              <td>
+                Sad
+              </td>
+              <td>
+                躺在床上翻来覆去，心里压着说不出的难过和沮丧，<br>
+                昨天晚上又失眠了。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Sad.mp3" controls></audio>
+              </td>
+            </tr>
+            <tr class="border-bottom-thin">
+              <td>
+                <audio class="audio-md" src="assets/audios/Neutral6.mp3" controls></audio>
+              </td>
+              <td>
+                Happy
+              </td>
+              <td>
+                和好朋友一起在院子里烧烤，聊着有趣的故事，<br>
+                享受着美食和欢乐的时光。
+              </td>
+              <td>
+                <audio class="audio-md" src="assets/audios/Happy.mp3" controls></audio>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'],],
+      },
+    }
+
+    const darkModeToggle = document.getElementById('dark-mode-toggle')
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('latex-dark')
+    })
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+
+</html>
