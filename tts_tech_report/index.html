@@ -28,35 +28,35 @@
       Encoder</h4>
     <p class="author">
       MiniMax Team <span class="date">May 2025</span><br />
-      <a style="font-size: 1.1rem;" href="/tech_report.pdf">[Tech Report]</a>
+      <a style="font-size: 1.1rem;" href="https://minimax-ai.github.io/tts_tech_report/MiniMax_Speech.pdf">[Tech
+        Report]</a>
     </p>
   </header>
 
   <div class="abstract">
     <h2>Abstract</h2>
-    <p>
-      We introduce MiniMax-Speech, an autoregressive Transformer-based Text-to-Speech (TTS) model thatgenerates
+    <p style="text-align: left;">
+      We introduce MiniMax-Speech, an autoregressive Transformer-based Text-to-Speech (TTS) model that generates
       high-quality
-      speech. A key innovation is our learnable speaker encoder, which extracts timbrefeatures from a reference audio
+      speech. A key innovation is our learnable speaker encoder, which extracts timbre features from a reference audio
       without
-      requiring its transcription. This enables MiniMax-Speech toproduce highly expressive speech with timbre consistent
-      with
-      the reference in a zero-shot manner, whilealso supporting one-shot voice cloning with exceptionally high
+      requiring its transcription. This enables MiniMax-Speech to produce highly expressive speech with timbre
+      consistent with
+      the reference in a zero-shot manner, while also supporting one-shot voice cloning with exceptionally high
       similarity to
-      the reference voice. Inaddition, the overall quality of the synthesized audio is enhanced through the proposed
-      Flow-VAE.
-      Ourmodel supports 32 languages and demonstrates excellent performance across multiple objective metricsand
-      subjective
-      evaluations. Notably, it achieves state-of-the-art (SOTA) results on objective voice cloningmetrics (Word Error
-      Rate and
-      Speaker Similarity) and has secured the top position on the public TTSArena leaderboard. Another key strength of
-      MiniMax-Speech, granted by the robust and disentangledrepresentations from the speaker encoder, is its
-      extensibility
-      without modifying the base model, enablingvarious applications such as: arbitrary voice emotion control via LoRA;
-      text
-      to voice(T2V) by synthesizingtimbre features directly from text description; and professional voice cloning (PVC)
-      by
-      fine-tuning timbrefeatures with additional data. We encourage readers to visit
+      the reference voice. In addition, the overall quality of the synthesized audio is enhanced through the proposed
+      Flow-VAE. Our model supports 32 languages and demonstrates excellent performance across multiple objective and
+      subjective evaluations metrics. Notably, it achieves state-of-the-art (SOTA) results on objective voice cloning
+      metrics
+      (Word Error Rate and Speaker Similarity) and has secured the top position on the public TTS Arena leaderboard.
+      Another
+      key strength of MiniMax-Speech, granted by the robust and disentangled representations from the speaker encoder,
+      is its
+      extensibility without modifying the base model, enabling various applications such as: arbitrary voice emotion
+      control
+      via LoRA; text to voice (T2V) by synthesizing timbre features directly from text description; and professional
+      voice
+      cloning (PVC) by fine-tuning timbre features with additional data. We encourage readers to visit
       <a href="https://github.com/MiniMax-AI">https://minimax-ai.github.io/tts_tech_report</a> for more examples.
     </p>
   </div>
@@ -68,23 +68,23 @@
         <a href="#architecture-overview">Architecture Overview</a>
       </li>
       <li>
-        <a href="#expressiveness-demonstration">Expressiveness Demonstration</a>
+        <a href="#expressiveness-demonstrations">Expressiveness Demonstrations</a>
         <ol>
-          <li><a href="#goodcase-with-high-versatility">Goodcase with High Versatility</a></li>
-          <li><a href="#showcase-with-multiple-generation-attempts">Showcase with Multiple Generation Attempts,
-              Post-Processing Audio Effects and Added Sound Effects</a></li>
+          <li><a href="#showcase-with-high-versatility">Showcase with High Versatility</a></li>
+          <li><a href="#showcase-with-multiple-generation-attempts">Showcase with Multiple Generation Attempts</a></li>
           <li><a href="#examples-with-more-possibilities">Examples with More Possibilities</a></li>
         </ol>
       </li>
       <li><a href="#zero-shot-vs-one-shot-demonstrations">Zero-Shot vs. One-Shot Demonstrations</a></li>
-      <li><a href="#multilingual-and-cross-lingual-capabilities-demonstration">Multilingual and Cross-Lingual
-          Capabilities Demonstration</a></li>
-      <li><a href="#flow-vae-vs-vae-comparison">Flow-VAE vs. VAE Comparison</a></li>
-      <li><a href="#professional-voice-clone-pvc-demonstration">Professional Voice Clone (PVC) Demonstration</a></li>
-      <li><a href="#emotion-control-demonstration">Emotion Control Demonstration</a></li>
-      <li><a href="#text-prompted-voice-generation-demonstration">Text-Prompted Voice Generation Demonstration</a></li>
+      <li><a href="#multilingual-and-cross-lingual-capabilities-demonstrations">Multilingual and Cross-Lingual
+          Capabilities Demonstrations</a></li>
+      <li><a href="#flow-vae-vs-vae-comparisons">Flow-VAE vs. VAE Comparisons</a></li>
+      <li><a href="#professional-voice-clone-pvc-demonstrations">Professional Voice Clone (PVC) Demonstrations</a></li>
+      <li><a href="#emotion-control-demonstrations">Emotion Control Demonstrations</a></li>
+      <li><a href="#text-prompted-voice-generation-demonstrations">Text-Prompted Voice Generation Demonstrations</a>
+      </li>
       <li><a href="#comparison-of-voice-naturalness">Comparison of voice
-          naturalness with the previous generation product</a></li>
+          naturalness with the previous generation products</a></li>
     </ol>
   </nav>
 
@@ -102,14 +102,14 @@
       </div>
 
       <div class="article-block">
-        <h2 id="expressiveness-demonstration">Expressiveness Demonstration</h2>
-        <h3 id="goodcase-with-high-versatility">Goodcase with High Versatility</h3>
+        <h2 id="expressiveness-demonstrations">Expressiveness Demonstrations</h2>
+        <h3 id="showcase-with-high-versatility">Showcase with High Versatility</h3>
         <div class="scroll-wrapper">
           <table style="width: 100%;">
             <tbody>
               <tr class="border-bottom-thin">
                 <th scope="col" style="width: 40%;">Description</th>
-                <th scope="col" style="width: 30%; text-align: center;">Voice Cloning Source Audio</th>
+                <th scope="col" style="width: 30%; text-align: center;">Source Audio</th>
                 <th scope="col" style="width: 30%; text-align: center;">Generated Audio</th>
               </tr>
               <tr class="border-bottom-thin">
@@ -243,7 +243,7 @@
               <tr class="border-bottom-thin">
                 <th scope="col">Source Audio</th>
                 <th scope="col">Prompt</th>
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col">Zero-Shot Version</th>
                 <th scope="col">One-Shot Version</th>
                 <th scope="col">Elevenlabs Multilingual_v2</th>
@@ -387,8 +387,8 @@
       </div>
 
       <div class="article-block">
-        <h2 id="multilingual-and-cross-lingual-capabilities-demonstration">Multilingual and Cross-Lingual Capabilities
-          Demonstration</h2>
+        <h2 id="multilingual-and-cross-lingual-capabilities-demonstrations">Multilingual and Cross-Lingual Capabilities
+          Demonstrations</h2>
         <p>Speech-02-HD maintain high naturalness in less common languages while demonstrating significant advantages in
           Standard
           Chinese pronunciation accuracy.</p>
@@ -398,7 +398,7 @@
               <tr class="border-bottom-thin">
                 <th scope="col">Languages</th>
                 <th scope="col">Source Audio</th>
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col">Minimax<br>Speech_02_HD</th>
                 <th scope="col">ElevenLabs<br>Multilingual_v2</th>
                 <th scope="col">OpenAI<br>TTS_1_HD<br>(*not cloned voice)</th>
@@ -410,15 +410,9 @@
                   <audio class="audio-sm" src="assets/audios/Thai_Male_Sourse.wav" controls></audio>
                 </td>
                 <td>
-                  <p>
-                    สวัสดีค่ะ วันนี้อากาศดีมากเลย<br>
-                    คุณจะไปทานอาหารกลางวันที่ไหนคะ<br>
-                    ฉันกำลังคิดว่าจะไปร้านอาหารไทยแถวนี้<br>
-                  </p>
-                  <p>
-                    你好，今天天气真好，你准备去哪里吃午饭？<br>
-                    我在想去附近的泰国餐厅。
-                  </p>
+                  สวัสดีค่ะ วันนี้อากาศดีมากเลย<br>
+                  คุณจะไปทานอาหารกลางวันที่ไหนคะ<br>
+                  ฉันกำลังคิดว่าจะไปร้านอาหารไทยแถวนี้<br>
                 </td>
                 <td>
                   <audio class="audio-sm" src="assets/audios/Thai.mp3" controls></audio>
@@ -438,15 +432,9 @@
                   <audio class="audio-sm" src="assets/audios/Vietnamese_Female_Sourse.wav" controls></audio>
                 </td>
                 <td>
-                  <p>
-                    Tôi đang đọc một cuốn sách rất hay về lịch sử Việt Nam.<br>
-                    Những câu chuyện về văn hóa truyền<br>
-                    thống thật sự rất thú vị.<br>
-                  </p>
-                  <p>
-                    我正在读一本很好的越南历史书。<br>
-                    关于传统文化的故事真的很有趣。
-                  </p>
+                  Tôi đang đọc một cuốn sách rất hay về lịch sử Việt Nam.<br>
+                  Những câu chuyện về văn hóa truyền<br>
+                  thống thật sự rất thú vị.<br>
                 </td>
                 <td>
                   <audio class="audio-sm" src="assets/audios/Vietnamese.mp3" controls></audio>
@@ -466,15 +454,9 @@
                   <audio class="audio-sm" src="assets/audios/Czech_Female_Sourse.wav" controls></audio>
                 </td>
                 <td>
-                  <p>
-                    Ranní mlha se pomalu zvedá nad řekou,<br>
-                    zatímco první paprsky slunce prosvítají mezi stromy.<br>
-                    Ptáci začínají svůj ranní koncert.<br>
-                  </p>
-                  <p>
-                    晨雾缓缓升起在河面上，第一缕阳光穿过树林。<br>
-                    鸟儿们开始了它们的晨间音乐会。
-                  </p>
+                  Ranní mlha se pomalu zvedá nad řekou,<br>
+                  zatímco první paprsky slunce prosvítají mezi stromy.<br>
+                  Ptáci začínají svůj ranní koncert.<br>
                 </td>
                 <td>
                   <audio class="audio-sm" src="assets/audios/Czech.mp3" controls></audio>
@@ -493,16 +475,9 @@
                   <audio class="audio-sm" src="assets/audios/Polish_Male_Sourse.wav" controls></audio>、
                 </td>
                 <td>
-                  <p>
-                    Młoda sowa siedzi cicho na gałęzi sosny,<br>
-                    obserwując leśną polanę w świetle księżyca.<br>
-                    Wiatr delikatnie porusza liśćmi drzew.<br>
-                  </p>
-                  <p>
-                    年轻的猫头鹰静静地坐在松树枝上，<br>
-                    在月光下观察着林间空地。<br>
-                    微风轻轻摇动着树叶。
-                  </p>
+                  Młoda sowa siedzi cicho na gałęzi sosny,<br>
+                  obserwując leśną polanę w świetle księżyca.<br>
+                  Wiatr delikatnie porusza liśćmi drzew.<br>
                 </td>
                 <td>
                   <audio class="audio-sm" src="assets/audios/Polish.mp3" controls></audio>
@@ -521,17 +496,10 @@
                   <audio class="audio-sm" src="assets/audios/Japanese_DominantMan_Sourse.mp3" controls></audio>
                 </td>
                 <td>
-                  <p>
-                    電車が遅延している影響で、渋谷駅がとても混雑<br>
-                    しています。次の山手線は約10分後に到着<br>
-                    予定です。お急ぎのお客様は、他の路線も<br>
-                    ご利用ください。
-                  </p>
-                  <p>
-                    由于列车延误的影响，涩谷站现在非常拥挤。<br>
-                    下一班山手线预计在10分钟后到达。<br>
-                    急需赶路的乘客也可以考虑使用其他线路。
-                  </p>
+                  電車が遅延している影響で、渋谷駅がとても混雑<br>
+                  しています。次の山手線は約10分後に到着<br>
+                  予定です。お急ぎのお客様は、他の路線も<br>
+                  ご利用ください。
                 </td>
                 <td>
                   <audio class="audio-sm" src="assets/audios/Japanese.mp3" controls></audio>
@@ -546,9 +514,6 @@
             </tbody>
           </table>
         </div>
-        <p>*Although OpenAI currently does not support voice cloning functionality, we still wish to conduct comparative
-          listening
-          tests with its excellent naturalness as a reference.</p>
         <div class="scroll-wrapper" style="margin-top: 3rem;">
           <table style="width: 100%;">
             <tbody>
@@ -556,7 +521,7 @@
                 <th scope="col">Original Language</th>
                 <th scope="col">Target Language</th>
                 <th scope="col">Source Audio</th>
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col">Minimax<br>Speech_02_HD</th>
                 <th scope="col">ElevenLabs<br>Multilingual_v2</th>
                 <th scope="col">OpenAI<br>TTS_1_HD<br>(*not cloned voice)</th>
@@ -680,7 +645,7 @@
       </div>
 
       <div class="article-block">
-        <h2 id="flow-vae-vs-vae-comparison">Flow-VAE vs. VAE Comparison</h2>
+        <h2 id="flow-vae-vs-vae-comparisons">Flow-VAE vs. VAE Comparison</h2>
         <p>Flow-VAE is less likely to produce the following instabilities.</p>
         <div class="scroll-wrapper" style="margin-top: 2rem;">
           <table style="width: 100%;">
@@ -742,7 +707,7 @@
       </div>
 
       <div class="article-block">
-        <h2 id="professional-voice-clone-pvc-demonstration">Professional Voice Clone (PVC) Demonstration</h2>
+        <h2 id="professional-voice-clone-pvc-demonstrations">Professional Voice Clone (PVC) Demonstrations</h2>
         <p>For more complex dialectal accents and tonal characteristics, PVC can reproduce these features while
           maintaining high
           naturalness based on the text content.</p>
@@ -751,7 +716,7 @@
             <tbody>
               <tr class="border-bottom-thin">
                 <th scope="col" style="text-align: center;">Source Audio</th>
-                <th scope="col" style="text-align: center;">Fast</th>
+                <th scope="col" style="text-align: center;">Zero-Shot</th>
                 <th scope="col" style="text-align: center;">PVC</th>
                 <th scope="col" style="text-align: center;">Differences</th>
               </tr>
@@ -797,7 +762,7 @@
       </div>
 
       <div class="article-block">
-        <h2 id="emotion-control-demonstration">Emotion Control Demonstration</h2>
+        <h2 id="emotion-control-demonstrations">Emotion Control Demonstrations</h2>
         <h3>Source Audio for Refreshing Young Man</h3>
         <audio src="assets/audios/Mandarin_Refreshing_Young_Man_Sourse.mp3" controls></audio>
         <h3>DEMO</h3>
@@ -807,7 +772,7 @@
               <tr class="border-bottom-thin">
                 <th scope="col">Neutral</th>
                 <th scope="col" style="min-width: 120px;">Emotion</th>
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col">Emotion-Infused Audio</th>
               </tr>
               <tr class="border-bottom-thin">
@@ -906,32 +871,20 @@
       </div>
 
       <div class="article-block">
-        <h2 id="text-prompted-voice-generation-demonstration">Text-Prompted Voice Generation Demonstration</h2>
+        <h2 id="text-prompted-voice-generation-demonstrations">Text-Prompted Voice Generation Demonstrations</h2>
         <div class="scroll-wrapper">
           <table style="width: 100%;">
             <tbody>
               <tr class="border-bottom-thin">
                 <th scope="col">Prompt</th>
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col" style="text-align: center;">Audio</th>
               </tr>
               <tr class="border-bottom-thin">
                 <td>
-                  <p>
-                    男性中年声音，说中文，音色浑厚醇厚，带有自然的磁性，语速偏慢，<br>
-                    音量适中，音调偏低沉。声音整体给人沉稳可靠的感觉，<br>
-                    在深度访谈场景中表现出专业性和亲和力，音质清晰，吐字规整有力。
-                  </p>
-                  <p>
-                    English Meaning: A middle-aged male voice speaking Chinese,<br>
-                    characterized by rich and mellow timbre with natural resonance.<br>
-                    The speech rate is moderately slow, with medium volume and<br>
-                    a deep pitch. The overall voice quality conveys a sense of<br>
-                    steadiness and reliability, demonstrating both professionalism <br>
-                    and approachability in in-depth interview settings.<br>
-                    The voice features clear articulation with precise and<br>
-                    well-defined pronunciation.
-                  </p>
+                  男性中年声音，说中文，音色浑厚醇厚，带有自然的磁性，语速偏慢，<br>
+                  音量适中，音调偏低沉。声音整体给人沉稳可靠的感觉，<br>
+                  在深度访谈场景中表现出专业性和亲和力，音质清晰，吐字规整有力。
                 </td>
                 <td>
                   在这个安静的夜晚，让我们一起走进《人生笔记》这本书。<br>
@@ -945,18 +898,9 @@
               </tr>
               <tr class="border-bottom-thin">
                 <td>
-                  <p>
-                    说中文的女青年，音色偏甜美，语速比较快，说话时带着一种轻快的感觉，<br>
-                    整体音调较高，像是在直播带货，整体氛围比较活跃，<br>
-                    声音清晰，听起来很有亲和力。
-                  </p>
-                  <p>
-                    A young female from China voice with a sweet and pleasant timbre. <br>
-                    The speech rate is relatively fast, and the pitch is moderately high,<br>
-                    carrying a light and energetic quality reminiscent of live-streaming sales<br>
-                    presentations. The overall atmosphere is vibrant and dynamic,<br>
-                    with clear voice quality and an engaging, approachable tone.
-                  </p>
+                  说中文的女青年，音色偏甜美，语速比较快，说话时带着一种轻快的感觉，<br>
+                  整体音调较高，像是在直播带货，整体氛围比较活跃，<br>
+                  声音清晰，听起来很有亲和力。
                 </td>
                 <td>
                   亲爱的宝宝们，等了好久的神仙面霜终于到货啦！<br>
@@ -970,18 +914,9 @@
               </tr>
               <tr class="border-bottom-thin">
                 <td>
-                  <p>
-                    中国女青年的声音，音色清脆，说话速度偏快，语调活泼，<br>
-                    像是在做游戏直播，声音中带着愉快的感觉，整体音调较高，<br>
-                    整体氛围比较轻松。
-                  </p>
-                  <p>
-                    A young Chinese woman's voice with a crisp and bright timbre. <br>
-                    The speech rate is relatively fast, with a moderately high<br>
-                    pitch and lively intonation characteristic of gaming live streams.<br>
-                    The voice conveys a cheerful quality, creating an overall<br>
-                    relaxed and casual atmosphere.
-                  </p>
+                  中国女青年的声音，音色清脆，说话速度偏快，语调活泼，<br>
+                  像是在做游戏直播，声音中带着愉快的感觉，整体音调较高，<br>
+                  整体氛围比较轻松。
                 </td>
                 <td>
                   啊！这里有个宝箱！让我们看看里面是什么～<br>
@@ -999,7 +934,7 @@
 
       <div class="article-block">
         <h2 id="comparison-of-voice-naturalness">Comparison of voice naturalness
-          with the previous generation product</h2>
+          with the previous generation products</h2>
         <p>The new model demonstrates significant advantages in naturalness compared to the previous version.</p>
         <h3 style="margin-top: 2rem;">Source Audio for Radiant_Girl</h3>
         <audio src="assets/audios/English_Radiant_Girl_Sourse.wav" controls></audio>
@@ -1008,7 +943,7 @@
           <table style="width: 100%;">
             <tbody>
               <tr class="border-bottom-thin">
-                <th scope="col">Text Content</th>
+                <th scope="col">Text</th>
                 <th scope="col" style="text-align: center;">Mnimax<br>Speech_02_HD</th>
                 <th scope="col" style="text-align: center;">Microsoft<br>Azure TTS</th>
                 <th scope="col" style="text-align: center;">AWS<br>Polly</th>

@@ -110,6 +110,7 @@
   --kbd-border-color: hsl(210, 5%, 70%);
   --table-border-color: black;
   --border-width-thin: 1.36px;
+  --border-color-thin: rgba(0, 0, 0, 0.1);
   --border-width-thick: 2.27px;
   --sidenote-target-border-color: hsl(55, 55%, 70%);
   --footnotes-border-color: hsl(0, 0%, 39%);
@@ -455,7 +456,7 @@ table.borders-custom {
   border-right: var(--border-width-thin) solid var(--table-border-color);
 }
 .border-bottom-thin {
-  border-bottom: var(--border-width-thin) solid var(--table-border-color);
+  border-bottom: var(--border-width-thin) solid var(--border-color-thin);
 }
 .border-left-thin {
   border-left: var(--border-width-thin) solid var(--table-border-color);

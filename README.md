@@ -6,7 +6,7 @@ Together, we are building artificial general intelligence with everyone, ensurin
 
 Here are our latest tech reports:
 
-- [MiniMax Speech-02 TTS Tech Report](./tts_tech_report)
+- [MiniMax Speech Tech Report](https://minimax-ai.github.io/tts_tech_report/)
 
 
 
