@@ -208,7 +208,7 @@ body {
   -moz-hyphens: auto;
 }
 
-@media (max-width: 1050px) {
+@media (min-width: 1050px) {
   body {
     max-width: 80vw;
   }
@@ -280,7 +280,7 @@ img {
 audio {
   display: block;
   width: 100%;
-  margin: 1rem auto;
+  margin: 0.7rem auto;
 }
 
 .audio-sm {
@@ -313,6 +313,24 @@ textarea {
 /* Natural flow and rhythm in articles by default */
 article > * + * {
   margin-top: 1em;
+}
+
+.article-block {
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: 3rem 0;
+  box-sizing: border-box;
+
+}
+
+.article-block h2 {
+  margin-top: 0 !important;
+}
+
+.article-block p {
+  font-size: 1.1rem;
+  line-height: 1.6;
 }
 
 /* Styles for inline code or code snippets */
@@ -393,16 +411,17 @@ caption {
 caption::before {
   content: 'Table ' counter(caption) '. ';
   font-weight: bold;
-}
+}abstract
 
 /* allow scroll on the x-axis */
-.scroll-wrapper {
+.scroll-wrapper, .article-block .scroll-wrapper {
   overflow-x: auto;
+  width: 100%;
 }
 
 /* if a table is wrapped in a scroll wrapper,
   the table cells shouldn't wrap */
-.scroll-wrapper > table td {
+.scroll-wrapper > table td, .article-block .scroll-wrapper > table td {
   white-space: nowrap;
 }
 
@@ -805,7 +824,7 @@ h1 + h2 {
 h2 + h3,
 h3 + h4,
 h4 + h5 {
-  margin-top: 1rem;
+  margin-top: 1.4rem;
 }
 
 h5 + h6 {
