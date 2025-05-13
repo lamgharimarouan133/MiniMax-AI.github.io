@@ -285,15 +285,15 @@ audio {
 }
 
 .audio-sm {
-  width: 190px;
+  min-width: 190px;
 }
 
 .audio-md {
-  width: 220px;
+  min-width: 220px;
 }
 
 .audio-lg {
-  width: 300px;
+  min-width: 300px;
 }
 
 
