@@ -342,6 +342,7 @@ kbd {
     monospace;
   font-size: 85%;
   hyphens: none;
+  text-align: left;
 }
 pre {
   padding: 1rem 1.4rem;
